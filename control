@@ -1,5 +1,5 @@
-Package: com.ridan.ttstest
-Name: TTS Test
+Package: com.ridan.auditis
+Name: Auditus
 Depends: mobilesubstrate
 Version: 0.0.1
 Architecture: iphoneos-arm
