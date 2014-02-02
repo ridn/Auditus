@@ -1,7 +1,7 @@
-//#import "BulletinBoard/BulletinBoard.h"
 #import <UIKit/UIKit2.h>
 #import <AVFoundation/AVFoundation.h>
-#define isiOS7 (kCFCoreFoundationVersionNumber >= 800.00)
+//#define isiOS7 (kCFCoreFoundationVersionNumber >= 800.00)
+//i guess the methods between 6 and 7 remain the same.
 
 static BOOL isDuplicate = NO;
 id previousItem;
@@ -36,10 +36,10 @@ withLanguageCode:(id)code;
 - (id)bannerItem;
 @end
 
-%group iOS6
+//%group iOS6
 //%hook SBBulletinBannerView
 %hook SBBulletinBannerItem
-/*
+/* check if headphones are plugged in
 %new
 - (BOOL)ttstIsHeadsetPluggedIn {
     AVAudioSessionRouteDescription* route = [[[AVAudioSession] sharedInstance] currentRoute];
@@ -53,36 +53,27 @@ withLanguageCode:(id)code;
 - (id)_initWithSeedBulletin:(id)arg1 additionalBulletins:(id)arg2 andObserver:(id)arg3
 //- (id)initWithItem:(id)arg1
 {
-VSSpeechSynthesizer *speech = 
-[[NSClassFromString(@"VSSpeechSynthesizer") alloc] init];
-[speech setRate:(float)1.0];
+	VSSpeechSynthesizer *speech = [[NSClassFromString(@"VSSpeechSynthesizer") alloc] init];
+	[speech setRate:(float)1.0];
 
-//[speech startSpeakingString:@"Test"];
-     //[speech release];
-       if(self == %orig)
-       {
+	if(self == %orig)
+	{
 
-     if(previousItem == arg1)
-	 {
-	    isDuplicate = YES;
-	 }else{
-	    isDuplicate = NO;
-	 }
+		if(previousItem == arg1)
+	 	{
+			 isDuplicate = YES;
+		 }else{
+			 isDuplicate = NO;
+	 	}
 	 previousItem = arg1;
 
-NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",[self _appName],[self title],[self message]];
+	NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",[self _appName],[self title],[self message]];
 
-//if([self ttstIsHeadsetPluggedIn])
+	//if([self ttstIsHeadsetPluggedIn])
+	//guess this method is called twice as the message comes through twice.
+	//checking for dupilicate message, to insure message not repeated
 	if(!isDuplicate)[speech startSpeakingString:textToSpeak];
 
-/*[[[[UIAlertView alloc] initWithTitle:[[self bannerItem] title]
-			     message:[[self bannerItem]message]
-			    delegate:nil
-		   cancelButtonTitle:[[self bannerItem]title]
-		   otherButtonTitles:nil] autorelease] show];
-*/
-
-	//[speech release];
        }
 
        return %orig; 
@@ -91,30 +82,31 @@ NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %
 
 
 %end
-
+//Lockscreen
 %hook SBAwayBulletinListItem
 - (id)initWithBulletin:(id)arg1 andObserver:(id)arg
 {
-if(self == %orig)
-       {
-	   [[[[UIAlertView alloc] initWithTitle:[self title]
-			     message:[self message]
-			    delegate:nil
-		   cancelButtonTitle:[self title]
-		   otherButtonTitles:nil] autorelease] show];
-
+	VSSpeechSynthesizer *speech = [[NSClassFromString(@"VSSpeechSynthesizer") alloc] init];
+	[speech setRate:(float)1.0];
+	if(self == %orig)
+	{
+		NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",[self _appName],[self title],[self message]];
+		[speech startSpeakingString:textToSpeak];
        }
        return %orig; 
 }
 
-%end
+//%end
 %end
 
+
+/*
 %ctor {
 	%init();
 	if (isiOS7) {
-		//%init(iOS7);
+		%init(iOS7);
 	} else {
 		%init(iOS6);
 	}
 }
+*/
