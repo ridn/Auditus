@@ -6,7 +6,6 @@
 static BOOL isDuplicate = NO;
 id previousItem;
 
-
 @interface VSSpeechSynthesizer : NSObject 
 { 
 } 
@@ -58,14 +57,13 @@ withLanguageCode:(id)code;
 
 	if(self == %orig)
 	{
-
 		if(previousItem == arg1)
 	 	{
 			 isDuplicate = YES;
 		 }else{
 			 isDuplicate = NO;
 	 	}
-	 previousItem = arg1;
+	previousItem = arg1;
 
 	NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",[self _appName],[self title],[self message]];
 
@@ -75,11 +73,8 @@ withLanguageCode:(id)code;
 	if(!isDuplicate)[speech startSpeakingString:textToSpeak];
 
        }
-
        return %orig; 
 }
-
-
 
 %end
 //Lockscreen
@@ -98,8 +93,6 @@ withLanguageCode:(id)code;
 
 //%end
 %end
-
-
 /*
 %ctor {
 	%init();
