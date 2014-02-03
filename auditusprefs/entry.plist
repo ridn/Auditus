@@ -3,8 +3,8 @@
 	bundle = auditusPrefs;
 	cell = PSLinkCell;
 	detail = auditusPrefsListController;
-	icon = auditusPrefs.png;
+	icon = Auditus.png;
 	isController = 1;
-	label = auditusPrefs;
+	label = Auditus;
     };
 }
