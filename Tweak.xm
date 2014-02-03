@@ -101,7 +101,7 @@ withLanguageCode:(id)code;
 
 //%end
 %end
-/*
+
 
 %new
 stuff in here will be used later, just getting it written down for now
@@ -138,7 +138,7 @@ switch (enabled) {
 
 }
 
-*/
+
 
 %ctor {
 	%init();
