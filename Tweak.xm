@@ -94,7 +94,7 @@ withLanguageCode:(id)code;
 	[speech setRate:(float)1.0];
 	if((self == %orig) &&  lockscreen)
 	{
-		NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",[self _appName],[self title],[self message]];
+		NSString* textToSpeak = [NSString stringWithFormat:@"New notification from: %@, %@.",[self title],[self message]];
 		[speech startSpeakingString:textToSpeak];
 	}
        return %orig; 
