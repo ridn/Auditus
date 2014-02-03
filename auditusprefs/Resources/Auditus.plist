@@ -41,9 +41,9 @@
 			<string>com.ridan.auditus/ReloadPrefs</string>
 			<key>validValues</key>
 			<array>
-				<string>0</string>			
-				<string>1</string>			
 				<string>2</string>			
+				<string>1</string>			
+				<string>0</string>			
 			</array>
 			<key>validTitles</key>
 			<array>
