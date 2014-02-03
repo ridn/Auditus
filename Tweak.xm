@@ -43,13 +43,10 @@ withLanguageCode:(id)code;
 - (id)bannerItem;
 @end
 
-static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringRef name,const void *object,CFDictionaryRef userInfo) {
-	plist = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
-	isEnabled = [[plist objectForKey:@"isEnabled"]boolValue];
-	enabled = (isEnabled) ? [[plist objectForKey:@"enabled"]intValue] : 3;
-}
+
 void refreshPrefs()
 {
+	enabled = (isEnabled) ? [[plist objectForKey:@"enabled"]intValue] : 3;
 	switch (enabled) {
 		case 0:
 			lockscreen = YES;
@@ -75,7 +72,11 @@ void refreshPrefs()
 			}
 
 }
-
+static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringRef name,const void *object,CFDictionaryRef userInfo) {
+	plist = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
+	isEnabled = [[plist objectForKey:@"isEnabled"]boolValue];
+	void refreshPrefs()
+}
 //%group iOS6
 //%hook SBBulletinBannerView
 %hook SBBulletinBannerItem
