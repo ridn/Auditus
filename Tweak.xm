@@ -43,6 +43,39 @@ withLanguageCode:(id)code;
 - (id)bannerItem;
 @end
 
+static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringRef name,const void *object,CFDictionaryRef userInfo) {
+	plist = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
+	isEnabled = [[plist objectForKey:@"isEnabled"]boolValue];
+	enabled = (isEnabled) ? [[plist objectForKey:@"enabled"]intValue] : 3;
+}
+void refreshPrefs()
+{
+switch (enabled) {
+	case 0:
+		lockscreen = YES;
+		homeAndInApp = YES;
+		break;
+	case 1:
+		lockscreen = YES;
+		homeAndInApp = NO;
+		break;
+	case 2:
+		lockscreen = NO;
+		homeAndInApp = YES;
+		break;
+	case 3:
+		lockscreen = NO;
+		homeAndInApp = NO;
+		break;
+	default:
+		lockscreen = YES;
+		homeAndInApp = YES;
+		break;
+	
+		}
+
+}
+
 //%group iOS6
 //%hook SBBulletinBannerView
 %hook SBBulletinBannerItem
@@ -60,7 +93,7 @@ withLanguageCode:(id)code;
 - (id)_initWithSeedBulletin:(id)arg1 additionalBulletins:(id)arg2 andObserver:(id)arg3
 //- (id)initWithItem:(id)arg1
 {
-	updatedPrefs();
+	refreshPrefs();
 	VSSpeechSynthesizer *speech = [[NSClassFromString(@"VSSpeechSynthesizer") alloc] init];
 	[speech setRate:(float)1.0];
 
@@ -90,6 +123,7 @@ withLanguageCode:(id)code;
 %hook SBAwayBulletinListItem
 - (id)initWithBulletin:(id)arg1 andObserver:(id)arg
 {
+	refreshPrefs();
 	VSSpeechSynthesizer *speech = [[NSClassFromString(@"VSSpeechSynthesizer") alloc] init];
 	[speech setRate:(float)1.0];
 	if((self == %orig) &&  lockscreen)
@@ -105,37 +139,7 @@ withLanguageCode:(id)code;
 
 
 
-static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringRef name,const void *object,CFDictionaryRef userInfo) {
-	plist = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
-	isEnabled = [[plist objectForKey:@"isEnabled"]boolValue];
-	enabled = (isEnabled) ? [[plist objectForKey:@"enabled"]intValue] : 3;
 
-switch (enabled) {
-	case 0:
-		lockscreen = YES;
-		homeAndInApp = YES;
-		break;
-	case 1:
-		lockscreen = YES;
-		homeAndInApp = NO;
-		break;
-	case 2:
-		lockscreen = NO;
-		homeAndInApp = YES;
-		break;
-	case 3:
-		lockscreen = NO;
-		homeAndInApp = NO;
-		break;
-	default:
-		lockscreen = YES;
-		homeAndInApp = YES;
-		break;
-	
-		}
-
-
-}
 
 
 
