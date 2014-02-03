@@ -4,6 +4,7 @@
 //i guess the methods between 6 and 7 remain the same.
 
 static BOOL isDuplicate = NO;
+static BOOL isEnabled = NO;
 id previousItem;
 
 @interface VSSpeechSynthesizer : NSObject 
@@ -87,19 +88,55 @@ withLanguageCode:(id)code;
 	{
 		NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",[self _appName],[self title],[self message]];
 		[speech startSpeakingString:textToSpeak];
-       }
+	}
        return %orig; 
 }
 
 //%end
 %end
 /*
+
+%new
+stuff in here will be used later, just getting it written down for now
+BOOL lockscreen;
+BOOL homeAndInApp;
+int enabled = 0; //this will be reading from prefs later
+
+static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringRef name,const void *object,CFDictionaryRef userInfo) {
+switch (enabled) {
+	case 0:
+		lockscreen = YES;
+		homeAndInApp = YES;
+		break;
+	case 1:
+		lockscreen = YES;
+		homeAndInApp = NO;
+		break;
+	case 2:
+		lockscreen = NO;
+		homeAndInApp = YES;
+		break;
+	default:
+		lockscreen = YES;
+		homeAndInApp = YES;
+		break;
+	
+		}
+
+
+}
+
+*/
+
 %ctor {
 	%init();
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, updatedPrefs, CFSTR("com.ridan.auditus/ReloadPrefs"), NULL, CFNotificationSuspensionBehaviorCoalesce);
+/*
 	if (isiOS7) {
 		%init(iOS7);
 	} else {
 		%init(iOS6);
 	}
-}
 */
+}
+
