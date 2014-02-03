@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Auditus</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.ridan.auditus</string>
+			<key>key</key>
+			<string>isEnabled</string>
+			<key>label</key>
+			<string>Enabled</string>
+			<key>PostNotification</key>
+			<string>com.ridan.auditus/ReloadPrefs</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.ridan.auditus</string>
+			<key>key</key>
+			<string>enabled</string>
+			<key>label</key>
+			<string>Enabled on</string>
+			<key>PostNotification</key>
+			<string>com.ridan.auditus/ReloadPrefs</string>
+			<key>validValues</key>
+			<array>
+				<string>0</string>			
+				<string>1</string>			
+				<string>2</string>			
+			</array>
+			<key>validTitles</key>
+			<array>
+				<string>HomeScreen & In App</string>			
+				<string>LockScreen</string>			
+				<string>Everywhere</string>			
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>action</key>
+			<string>twitter</string>
+			<key>label</key>
+			<string>@r_idn</string>
+			<key>icon</key>
+			<string>twitter.png</string>
+			<key>height</key>
+			<integer>25</integer>
+			</dict>	
+	</array>
+	<key>title</key>
+	<string>Auditus</string>
+</dict>
+</plist>
