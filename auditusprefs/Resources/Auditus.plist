@@ -27,6 +27,8 @@
 		<dict>
 			<key>cell</key>
 			<string>PSLinkListCell</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
 			<key>default</key>
 			<integer>0</integer>
 			<key>defaults</key>
