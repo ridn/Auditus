@@ -50,29 +50,29 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 }
 void refreshPrefs()
 {
-switch (enabled) {
-	case 0:
-		lockscreen = YES;
-		homeAndInApp = YES;
-		break;
-	case 1:
-		lockscreen = YES;
-		homeAndInApp = NO;
-		break;
-	case 2:
-		lockscreen = NO;
-		homeAndInApp = YES;
-		break;
-	case 3:
-		lockscreen = NO;
-		homeAndInApp = NO;
-		break;
-	default:
-		lockscreen = YES;
-		homeAndInApp = YES;
-		break;
-	
-		}
+	switch (enabled) {
+		case 0:
+			lockscreen = YES;
+			homeAndInApp = YES;
+			break;
+		case 1:
+			lockscreen = YES;
+			homeAndInApp = NO;
+			break;
+		case 2:
+			lockscreen = NO;
+			homeAndInApp = YES;
+			break;
+		case 3:
+			lockscreen = NO;
+			homeAndInApp = NO;
+			break;
+		default:
+			lockscreen = YES;
+			homeAndInApp = YES;
+			break;
+		
+			}
 
 }
 
