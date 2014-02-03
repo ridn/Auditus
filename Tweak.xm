@@ -3,8 +3,15 @@
 //#define isiOS7 (kCFCoreFoundationVersionNumber >= 800.00)
 //i guess the methods between 6 and 7 remain the same.
 
+//static NSString* const filePath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Preferences/"] stringByAppendingPathComponent:[NSString stringWithFormat: @"com.ridan.auditus.plist"]];
+static NSString* const filePath = @"/var/mobile/Library/Preferences/com.ridan.auditus.plist";
+static NSMutableDictionary* plist = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
 static BOOL isDuplicate = NO;
-static BOOL isEnabled = NO;
+static BOOL isEnabled = [[plist objectForKey:@"isEnabled"]boolValue];
+BOOL lockscreen;
+BOOL homeAndInApp;
+int enabled; 
+
 id previousItem;
 
 @interface VSSpeechSynthesizer : NSObject 
@@ -56,7 +63,7 @@ withLanguageCode:(id)code;
 	VSSpeechSynthesizer *speech = [[NSClassFromString(@"VSSpeechSynthesizer") alloc] init];
 	[speech setRate:(float)1.0];
 
-	if(self == %orig)
+	if((self == %orig) && homeAndInApp)
 	{
 		if(previousItem == arg1)
 	 	{
@@ -84,7 +91,7 @@ withLanguageCode:(id)code;
 {
 	VSSpeechSynthesizer *speech = [[NSClassFromString(@"VSSpeechSynthesizer") alloc] init];
 	[speech setRate:(float)1.0];
-	if(self == %orig)
+	if((self == %orig) &&  lockscreen)
 	{
 		NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",[self _appName],[self title],[self message]];
 		[speech startSpeakingString:textToSpeak];
@@ -98,11 +105,12 @@ withLanguageCode:(id)code;
 
 %new
 stuff in here will be used later, just getting it written down for now
-BOOL lockscreen;
-BOOL homeAndInApp;
-int enabled = 0; //this will be reading from prefs later
 
 static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringRef name,const void *object,CFDictionaryRef userInfo) {
+	plist = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
+	isEnabled = [[plist objectForKey:@"isEnabled"]boolValue];
+	enabled = (isEnabled) ? [[plist objectForKey:@"enabled"]intValue] : 3;
+
 switch (enabled) {
 	case 0:
 		lockscreen = YES;
@@ -115,6 +123,10 @@ switch (enabled) {
 	case 2:
 		lockscreen = NO;
 		homeAndInApp = YES;
+		break;
+	case 3:
+		lockscreen = NO;
+		homeAndInApp = NO;
 		break;
 	default:
 		lockscreen = YES;
