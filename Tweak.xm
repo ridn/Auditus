@@ -103,7 +103,6 @@ withLanguageCode:(id)code;
 %end
 
 
-%new
 
 static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringRef name,const void *object,CFDictionaryRef userInfo) {
 	plist = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
