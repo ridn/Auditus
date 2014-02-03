@@ -60,6 +60,7 @@ withLanguageCode:(id)code;
 - (id)_initWithSeedBulletin:(id)arg1 additionalBulletins:(id)arg2 andObserver:(id)arg3
 //- (id)initWithItem:(id)arg1
 {
+	updatedPrefs();
 	VSSpeechSynthesizer *speech = [[NSClassFromString(@"VSSpeechSynthesizer") alloc] init];
 	[speech setRate:(float)1.0];
 
