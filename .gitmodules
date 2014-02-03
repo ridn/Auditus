@@ -2,5 +2,5 @@
 	path = theos
 	url = git://github.com/DHowett/theos.git
 [submodule "theos"]
-	path = auditisprefs/theos
+	path = auditusprefs/theos
 	url = git://github.com/DHowett/theos.git
