@@ -46,6 +46,8 @@ withLanguageCode:(id)code;
 
 void refreshPrefs()
 {
+	plist = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
+	isEnabled = [[plist objectForKey:@"isEnabled"]boolValue];
 	enabled = (isEnabled) ? [[plist objectForKey:@"enabled"]intValue] : 3;
 	switch (enabled) {
 		case 0:
@@ -73,8 +75,6 @@ void refreshPrefs()
 
 }
 static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringRef name,const void *object,CFDictionaryRef userInfo) {
-	plist = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
-	isEnabled = [[plist objectForKey:@"isEnabled"]boolValue];
 	void refreshPrefs()
 }
 //%group iOS6
