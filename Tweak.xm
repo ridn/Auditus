@@ -1,6 +1,6 @@
 #import <UIKit/UIKit2.h>
 #import <AVFoundation/AVFoundation.h>
-//#define isiOS7 (kCFCoreFoundationVersionNumber >= 800.00)
+#define isiOS7 (kCFCoreFoundationVersionNumber >= 800.00)
 //i guess the methods between 6 and 7 remain the same.
 
 //static NSString* const filePath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Preferences/"] stringByAppendingPathComponent:[NSString stringWithFormat: @"com.ridan.auditus.plist"]];
@@ -76,7 +76,7 @@ void refreshPrefs()
 static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringRef name,const void *object,CFDictionaryRef userInfo) {
 	void refreshPrefs()
 }
-//%group iOS6
+%group iOS6
 //%hook SBBulletinBannerView
 %hook SBBulletinBannerItem
 /* check if headphones are plugged in
@@ -134,10 +134,28 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
        return %orig; 
 }
 
-//%end
+%end
 %end
 
+%group iOS7
+%hook SBBulletinBannerController
+- (void)observer:(id)observer addBulletin:(BBBulletinRequest *)bulletin forFeed:(int)feed
+{
+	%orig;
+	refreshPrefs();
+	AVSpeechSynthesizer *speech = [[AVSpeechSynthesizer alloc] init];
 
+	[speech setRate:(float)1.0];
+	if(homeAndInApp)
+	{
+		NSString* textToSpeak = [NSString stringWithFormat:@"New notification from: %@, %@.",bulletin.title,bulletin.message];
+		AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:testToSpeak];
+		[speech speakUtterance:utterance];
+	}
+
+}
+%end
+%end
 
 
 
@@ -146,12 +164,10 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 %ctor {
 	%init();
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, updatedPrefs, CFSTR("com.ridan.auditus/ReloadPrefs"), NULL, CFNotificationSuspensionBehaviorCoalesce);
-/*
 	if (isiOS7) {
 		%init(iOS7);
 	} else {
 		%init(iOS6);
 	}
-*/
 }
 
