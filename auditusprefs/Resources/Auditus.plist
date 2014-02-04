@@ -36,7 +36,7 @@
 			<key>key</key>
 			<string>enabled</string>
 			<key>label</key>
-			<string>Enabled on</string>
+			<string>Speak on</string>
 			<key>PostNotification</key>
 			<string>com.ridan.auditus/ReloadPrefs</string>
 			<key>validValues</key>
