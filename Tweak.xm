@@ -1,7 +1,8 @@
 #import <UIKit/UIKit2.h>
 #import <AVFoundation/AVFoundation.h>
+#import "BulletinBoard/BulletinBoard.h"
+
 #define isiOS7 (kCFCoreFoundationVersionNumber >= 800.00)
-//i guess the methods between 6 and 7 remain the same.
 
 //static NSString* const filePath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Preferences/"] stringByAppendingPathComponent:[NSString stringWithFormat: @"com.ridan.auditus.plist"]];
 static NSString* const filePath = @"/var/mobile/Library/Preferences/com.ridan.auditus.plist";
@@ -74,7 +75,7 @@ void refreshPrefs()
 
 }
 static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringRef name,const void *object,CFDictionaryRef userInfo) {
-	void refreshPrefs()
+	void refreshPrefs();
 }
 %group iOS6
 //%hook SBBulletinBannerView
@@ -145,11 +146,10 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 	refreshPrefs();
 	AVSpeechSynthesizer *speech = [[AVSpeechSynthesizer alloc] init];
 
-	[speech setRate:(float)1.0];
 	if(homeAndInApp)
 	{
 		NSString* textToSpeak = [NSString stringWithFormat:@"New notification from: %@, %@.",bulletin.title,bulletin.message];
-		AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:testToSpeak];
+		AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:textToSpeak];
 		[speech speakUtterance:utterance];
 	}
 
