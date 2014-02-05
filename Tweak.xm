@@ -78,6 +78,7 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 	void refreshPrefs();
 }
 %group iOS6
+// from SpringBoard (iOS6)
 //%hook SBBulletinBannerView
 %hook SBBulletinBannerItem
 /* check if headphones are plugged in
@@ -120,7 +121,7 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 }
 
 %end
-//Lockscreen
+//Lockscreen (iOS6)
 %hook SBAwayBulletinListItem
 - (id)initWithBulletin:(id)arg1 andObserver:(id)arg
 {
@@ -139,7 +140,25 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 %end
 
 %group iOS7
+//from SpringBoard (iOS7)
 %hook SBBulletinBannerController
+- (void)observer:(id)observer addBulletin:(BBBulletinRequest *)bulletin forFeed:(int)feed
+{
+	%orig;
+	refreshPrefs();
+	AVSpeechSynthesizer *speech = [[AVSpeechSynthesizer alloc] init];
+
+	if(homeAndInApp)
+	{
+		NSString* textToSpeak = [NSString stringWithFormat:@"New notification from: %@, %@.",bulletin.title,bulletin.message];
+		AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:textToSpeak];
+		[speech speakUtterance:utterance];
+	}
+
+}
+%end
+//LockScreen (iOS7)
+%hook SBLockScreenNotificationListController
 - (void)observer:(id)observer addBulletin:(BBBulletinRequest *)bulletin forFeed:(int)feed
 {
 	%orig;
