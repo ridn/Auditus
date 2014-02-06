@@ -165,7 +165,7 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 	refreshPrefs();
 	AVSpeechSynthesizer *speech = [[AVSpeechSynthesizer alloc] init];
 
-	if(homeAndInApp)
+	if(lockscreen)
 	{
 		NSString* textToSpeak = [NSString stringWithFormat:@"New notification from: %@, %@.",bulletin.title,bulletin.message];
 		AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:textToSpeak];
