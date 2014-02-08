@@ -1,4 +1,6 @@
 #import <Preferences/Preferences.h>
+#import <Social/Social.h>
+
 @interface PSTableCell (meh)
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)specifier;
 @end
@@ -38,6 +40,21 @@
 @implementation auditusPrefsListController
 - (id)specifiers {
 	if(_specifiers == nil) {
+		UILongPressGestureRecognizer *shareLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+		UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+
+		[rightButton addGestureRecognizer:shareLongPress];
+		[shareLongPress release];
+		[rightButton addTarget:self
+		   action:@selector(tweetMe)
+		                forControlEvents:UIControlEventTouchUpInside];
+		[rightButton setBackgroundImage:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/auditusPrefs.bundle/share.png"] forState:UIControlStateNormal];
+
+		rightButton.frame = CGRectMake(0.0, 0.0, 21.0, 20.0);
+		UIBarButtonItem *rightBarButton =[[UIBarButtonItem alloc] initWithCustomView:rightButton];
+		[[self navigationItem] setRightBarButtonItem: rightBarButton];
+		[rightBarButton release];
+
 		_specifiers = [[self loadSpecifiersFromPlistName:@"Auditus" target:self] retain];
 		[[self specifierAtIndex:2] setProperty:[AuditusLinkListCell class] forKey:@"cellClass"];
 	}
@@ -58,6 +75,35 @@ if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tweetbo
 		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"https://mobile.twitter.com/" stringByAppendingString:@"r_idn"]]];
 	}
 }
+- (void)tweetMe
+{
+
+	NSString* initialText = @"I'm loving Auditus by @r_idn" ;
+	if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
+		SLComposeViewController *twitterComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+		[twitterComposer addURL:[NSURL URLWithString:@"http://github.com/ridn/Auditus"]];
+		[twitterComposer setInitialText:initialText];
+		[twitterComposer setCompletionHandler:^(SLComposeViewControllerResult result) {
+		        [self.parentController dismissModalViewControllerAnimated:YES];
+		}];
+		[self.parentController presentViewController:twitterComposer animated:YES completion:nil];
+
+	}
+}
+
+- (void)longPress:(UILongPressGestureRecognizer*)gesture {
+
+	if ( gesture.state == UIGestureRecognizerStateBegan )
+	{
+		NSString* texttoshare =@"Check out Auditus by @r_idn";
+		NSURL *urlToShare = [NSURL URLWithString:@"http://github.com/ridn/Auditus"];
+
+		NSArray *activityItems = [NSArray arrayWithObjects:texttoshare,urlToShare,nil];
+		UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+		[self.parentController presentViewController:activityVC animated:YES completion:nil];
+	}
+}
+
 
 @end
 
