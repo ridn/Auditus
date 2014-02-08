@@ -1,6 +1,6 @@
 include theos/makefiles/common.mk
 
-ARCHS= armv7
+ARCHS = armv7
 
 BUNDLE_NAME = auditusPrefs
 auditusPrefs_FILES = auditusPrefs.x
