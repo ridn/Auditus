@@ -3,7 +3,7 @@ include theos/makefiles/common.mk
 BUNDLE_NAME = auditusPrefs
 auditusPrefs_FILES = auditusPrefs.x
 auditusPrefs_INSTALL_PATH = /Library/PreferenceBundles
-auditusPrefs_FRAMEWORKS = UIKit
+auditusPrefs_FRAMEWORKS = UIKit Social
 auditusPrefs_PRIVATE_FRAMEWORKS = Preferences
 
 include $(THEOS_MAKE_PATH)/bundle.mk
