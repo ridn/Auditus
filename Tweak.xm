@@ -83,8 +83,8 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 %hook SBBulletinBannerItem
 /* check if headphones are plugged in
 %new
-- (BOOL)ttstIsHeadsetPluggedIn {
-    AVAudioSessionRouteDescription* route = [[[AVAudioSession] sharedInstance] currentRoute];
+- (BOOL)auditusIsHeadsetPluggedIn {
+    AVAudioSessionRouteDescription* route = [[AVAudioSession sharedInstance] currentRoute];
     for (AVAudioSessionPortDescription* desc in [route outputs]) {
 	if ([[desc portType] isEqualToString:AVAudioSessionPortHeadphones])
 	    return YES;
@@ -146,12 +146,16 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 {
 	%orig;
 	refreshPrefs();
-	AVSpeechSynthesizer *speech = [[AVSpeechSynthesizer alloc] init];
+
+	//so i can compile without 7.x framework issues.
+	Class speechSynthesizer = objc_getClass("AVSpeechSynthesizer");
+	Class speechUtterance = objc_getClass("AVSpeechUtterance");
+	AVSpeechSynthesizer *speech = [[speechSynthesizer alloc] init];
 
 	if(homeAndInApp)
 	{
 		NSString* textToSpeak = [NSString stringWithFormat:@"New notification from: %@, %@.",bulletin.title,bulletin.message];
-		AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:textToSpeak];
+		AVSpeechUtterance *utterance = [speechUtterance speechUtteranceWithString:textToSpeak];
 		[speech speakUtterance:utterance];
 	}
 
@@ -163,12 +167,15 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 {
 	%orig;
 	refreshPrefs();
-	AVSpeechSynthesizer *speech = [[AVSpeechSynthesizer alloc] init];
+
+	Class speechSynthesizer = objc_getClass("AVSpeechSynthesizer");
+	Class speechUtterance = objc_getClass("AVSpeechUtterance");
+	AVSpeechSynthesizer *speech = [[speechSynthesizer alloc] init];
 
 	if(lockscreen)
 	{
 		NSString* textToSpeak = [NSString stringWithFormat:@"New notification from: %@, %@.",bulletin.title,bulletin.message];
-		AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:textToSpeak];
+		AVSpeechUtterance *utterance = [speechUtterance speechUtteranceWithString:textToSpeak];
 		[speech speakUtterance:utterance];
 	}
 
