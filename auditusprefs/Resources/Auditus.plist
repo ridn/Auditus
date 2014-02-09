@@ -58,6 +58,24 @@
 		</dict>
 		<dict>
 			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.ridan.auditus</string>
+			<key>key</key>
+			<string>ringerIgnore</string>
+			<key>label</key>
+			<string>Ignore Ringer Mute</string>
+			<key>PostNotification</key>
+			<string>com.ridan.auditus/ReloadPrefs</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>action</key>
 			<string>twitter</string>
