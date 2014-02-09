@@ -11,6 +11,7 @@ static BOOL isDuplicate = NO;
 static BOOL isEnabled = [[plist objectForKey:@"isEnabled"]boolValue];
 BOOL lockscreen;
 BOOL homeAndInApp;
+BOOL ringerStateMuted;
 int enabled; 
 
 id previousItem;
