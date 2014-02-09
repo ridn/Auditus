@@ -9,6 +9,7 @@ static NSString* const filePath = @"/var/mobile/Library/Preferences/com.ridan.au
 static NSMutableDictionary* plist = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
 static BOOL isDuplicate = NO;
 static BOOL isEnabled = [[plist objectForKey:@"isEnabled"]boolValue];
+static BOOL ignoreRingerState = [[plist objectForKey:@"ringerIgnore"]boolValue];
 BOOL lockscreen;
 BOOL homeAndInApp;
 BOOL ringerStateMuted;
