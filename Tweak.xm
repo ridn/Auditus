@@ -42,13 +42,20 @@ id previousItem;
 - (id)initWithItem:(id)arg1;
 - (id)bannerItem;
 @end
-
+@interface SBMediaController
++ (id)sharedInstance;
+- (BOOL)isRingerMuted;
+- (void)setRingerMuted:(BOOL)muted;
+@end
 
 void refreshPrefs()
 {
 	plist = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
 	isEnabled = [[plist objectForKey:@"isEnabled"]boolValue];
-	enabled = (isEnabled) ? [[plist objectForKey:@"enabled"]intValue] : 3;
+	ignoreRingerState = [[plist objectForKey:@"ringerIgnore"]boolValue];
+	ringerStateMuted = (ignoreRingerState) ? NO : [[%c(SBMediaController) sharedInstance] isRingerMuted];
+	enabled = (isEnabled && !ringerStateMuted) ? [[plist objectForKey:@"enabled"]intValue] : 3;
+	
 	switch (enabled) {
 		case 0:
 			lockscreen = YES;
