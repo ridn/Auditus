@@ -5,9 +5,20 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)specifier;
 @end
 @interface AuditusLinkListCell : PSTableCell
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)specifier;
 @end
-
+@interface twitterCell : PSTableCell
+@end
+//special colored Twitter cell, b/c why not??
+@implementation twitterCell
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)specifier {
+        self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
+        if(self)
+        {
+                self.backgroundColor = [UIColor colorWithRed:0.537 green:0.824 blue:0.961 alpha:1.0];//[UIColor colorWithRed:0.537 green:0.879 blue:0.961 alpha:1.0];
+        }
+        return self;
+}
+@end
 @implementation AuditusLinkListCell
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)specifier {
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
@@ -57,13 +68,15 @@
 
 		_specifiers = [[self loadSpecifiersFromPlistName:@"Auditus" target:self] retain];
 		[[self specifierAtIndex:2] setProperty:[AuditusLinkListCell class] forKey:@"cellClass"];
+		[[self specifierAtIndex:[_specifiers count]-1] setProperty:[twitterCell class] forKey:@"cellClass"];
 	}
 	return _specifiers;
 }
 -(void)setPreferenceValue:(id)value specifier:(id)specifier
 {
 	[super setPreferenceValue:value specifier:specifier];
-	[self reloadSpecifierAtIndex:2 animated:YES];
+        if(specifier == [self specifierAtIndex:1])
+		[self reloadSpecifierAtIndex:2 animated:YES];
 }
 - (void)twitter
 {
