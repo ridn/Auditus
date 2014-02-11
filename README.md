@@ -13,7 +13,7 @@ Listen to incoming notifications (as they are spoken).
 ##Todo
 
 - **[Option]** to play only in headphones (and vice versa)
- **[Option]** to interrupt/stop speaking
+- **[Option]** to interrupt/stop speaking
 - **[Option]** to speak automatically (as soon a notification arrives) or speak upon action i.e. (double?) tap banner
 - Select which part should be read (title, message, both)
 - **[Option]** Read title automatically, read content on action?
