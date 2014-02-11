@@ -1,5 +1,5 @@
 #Auditus
-===========
+
 
 Listen to incoming notifications (as they are spoken).
 
@@ -22,6 +22,6 @@ Listen to incoming notifications (as they are spoken).
     - so when user says "read" or some crap, it'll then speak the notification.
 - Other stuff i cant remember?
 
-ScreenShot
-=================
+####ScreenShot
+
 ![SCREENSHOT](/IMG_3989.PNG "Screenshot")
