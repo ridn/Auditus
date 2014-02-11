@@ -21,6 +21,7 @@ Listen to incoming notifications (as they are spoken).
 - figure out how to listen to user speech input while "banner" is showing
     - so when user says "read" or some *crap*, it'll then speak the notification.
 - Other stuff i cant remember?
+- Compile for arm64 :/
 
 ####ScreenShot
 
