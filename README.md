@@ -1,16 +1,16 @@
-Auditus
+#Auditus
 ===========
 
 Listen to incoming notifications (as they are spoken).
 
-Features/Completed List
+##Features/Completed List
 ===========
 - Support for homescreen and LockScreen (separately)
 - iOS 7 and iOS6 support
 - Kill switch
 - Option to ignore ringer mute switch
 
-Todo
+##Todo
 ===========
 - [Option] to play only in headphones (and vice versa)
 - [Option] to interrupt/stop speaking
