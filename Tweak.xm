@@ -139,7 +139,7 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 	[speech setRate:(float)1.0];
 	if((self == %orig) &&  lockscreen)
 	{
-		NSString* textToSpeak = [NSString stringWithFormat:@"New notification from: %@, %@.",[self title],[self message]];
+		NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",arg1.section,[self title],[self message]];
 		[speech startSpeakingString:textToSpeak];
 	}
        return %orig; 
@@ -163,7 +163,7 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 
 	if(homeAndInApp)
 	{
-		NSString* textToSpeak = [NSString stringWithFormat:@"New notification from: %@, %@.",bulletin.title,bulletin.message];
+		NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",bulletin.section,bulletin.title,bulletin.message];
 		AVSpeechUtterance *utterance = [speechUtterance speechUtteranceWithString:textToSpeak];
 		[speech speakUtterance:utterance];
 	}
@@ -183,7 +183,7 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 
 	if(lockscreen)
 	{
-		NSString* textToSpeak = [NSString stringWithFormat:@"New notification from: %@, %@.",bulletin.title,bulletin.message];
+		NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",bulletin.section,bulletin.title,bulletin.message];
 		AVSpeechUtterance *utterance = [speechUtterance speechUtteranceWithString:textToSpeak];
 		[speech speakUtterance:utterance];
 	}
