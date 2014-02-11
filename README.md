@@ -22,4 +22,4 @@ Todo
     - so when user says "read" or some crap, it'll then speak the notification.
 - Other stuff i cant remember?
 
-![SCREENSHOT](/IMG_3989.png "Screenshot")
+![SCREENSHOT](/IMG_3989.PNG "Screenshot")
