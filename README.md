@@ -23,6 +23,6 @@ Listen to incoming notifications (as they are spoken).
 - Other stuff i cant remember?
 - Compile for arm64 :/
 
-####ScreenShot
+####ScreenShot (of settings)
 
 ![SCREENSHOT](/IMG_3989.PNG "Screenshot")
