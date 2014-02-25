@@ -13,7 +13,9 @@ static BOOL ignoreRingerState = [[plist objectForKey:@"ringerIgnore"]boolValue];
 BOOL lockscreen;
 BOOL homeAndInApp;
 BOOL ringerStateMuted;
+BOOL shouldSpeakThisOutput;
 int enabled; 
+int selectedOutputs; 
 
 id previousItem;
 
@@ -50,6 +52,15 @@ id previousItem;
 - (void)setRingerMuted:(BOOL)muted;
 @end
 
+BOOL auditusIsHeadsetPluggedIn (){
+
+    AVAudioSessionRouteDescription* route = [[AVAudioSession sharedInstance] currentRoute];
+    for (AVAudioSessionPortDescription* desc in [route outputs]) {
+        if ([[desc portType] isEqualToString:AVAudioSessionPortHeadphones])
+            return YES;
+    }
+    return NO;
+}
 void refreshPrefs()
 {
 	plist = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
@@ -57,21 +68,26 @@ void refreshPrefs()
 	ignoreRingerState = [[plist objectForKey:@"ringerIgnore"]boolValue];
 	ringerStateMuted = (ignoreRingerState) ? NO : [[%c(SBMediaController) sharedInstance] isRingerMuted];
 	enabled = (isEnabled && !ringerStateMuted) ? [[plist objectForKey:@"enabled"]intValue] : 3;
+	selectedOutputs = [[plist objectForKey:@"outputTo"]intValue];
 	
 	switch (enabled) {
 		case 0:
+			//speak everywhere
 			lockscreen = YES;
 			homeAndInApp = YES;
 			break;
 		case 1:
+			//speak on Lockscreen only
 			lockscreen = YES;
 			homeAndInApp = NO;
 			break;
 		case 2:
+			//speak on SB only
 			lockscreen = NO;
 			homeAndInApp = YES;
 			break;
 		case 3:
+			//dont speak (disabled)
 			lockscreen = NO;
 			homeAndInApp = NO;
 			break;
@@ -82,6 +98,24 @@ void refreshPrefs()
 		
 			}
 
+	switch(selectedOutputs) {
+		case 0:
+			//speak through device speakers
+			//though we wont be speaking at all with audio out plugged in
+			shouldSpeakThisOutput = !(auditusIsHeadsetPluggedIn());
+			break;
+		case 1:
+			//speak through external output (headphones (& external /docked/ speakers? –– look into it))
+			shouldSpeakThisOutput = (auditusIsHeadsetPluggedIn());
+			break;
+		case 2:
+			//speak every output
+			shouldSpeakThisOutput = YES;
+			break;
+		default:
+			shouldSpeakThisOutput = YES;
+			break;
+	}
 }
 static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringRef name,const void *object,CFDictionaryRef userInfo) {
 	void refreshPrefs();
@@ -90,17 +124,7 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 // from SpringBoard (iOS6)
 //%hook SBBulletinBannerView
 %hook SBBulletinBannerItem
-/* check if headphones are plugged in
-%new
-- (BOOL)auditusIsHeadsetPluggedIn {
-    AVAudioSessionRouteDescription* route = [[AVAudioSession sharedInstance] currentRoute];
-    for (AVAudioSessionPortDescription* desc in [route outputs]) {
-	if ([[desc portType] isEqualToString:AVAudioSessionPortHeadphones])
-	    return YES;
-    }
-    return NO;
-}
-*/
+
 - (id)_initWithSeedBulletin:(id)arg1 additionalBulletins:(id)arg2 andObserver:(id)arg3
 //- (id)initWithItem:(id)arg1
 {
@@ -108,7 +132,7 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 	VSSpeechSynthesizer *speech = [[NSClassFromString(@"VSSpeechSynthesizer") alloc] init];
 	[speech setRate:(float)1.0];
 
-	if((self == %orig) && homeAndInApp)
+	if((self == %orig) && homeAndInApp && shouldSpeakThisOutput)
 	{
 		if(previousItem == arg1)
 	 	{
@@ -120,7 +144,6 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 
 	NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",[self _appName],[self title],[self message]];
 
-	//if([self ttstIsHeadsetPluggedIn])
 	//guess this method is called twice as the message comes through twice.
 	//checking for dupilicate message, to insure message not repeated
 	if(!isDuplicate)[speech startSpeakingString:textToSpeak];
@@ -137,7 +160,7 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 	refreshPrefs();
 	VSSpeechSynthesizer *speech = [[NSClassFromString(@"VSSpeechSynthesizer") alloc] init];
 	[speech setRate:(float)1.0];
-	if((self == %orig) &&  lockscreen)
+	if((self == %orig) &&  lockscreen && shouldSpeakThisOutput)
 	{
 		NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",arg1.section,[self title],[self message]];
 		[speech startSpeakingString:textToSpeak];
@@ -161,7 +184,7 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 	Class speechUtterance = objc_getClass("AVSpeechUtterance");
 	AVSpeechSynthesizer *speech = [[speechSynthesizer alloc] init];
 
-	if(homeAndInApp)
+	if(homeAndInApp && shouldSpeakThisOutput)
 	{
 		NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",bulletin.section,bulletin.title,bulletin.message];
 		AVSpeechUtterance *utterance = [speechUtterance speechUtteranceWithString:textToSpeak];
@@ -181,7 +204,7 @@ static void updatedPrefs(CFNotificationCenterRef center,void *observer,CFStringR
 	Class speechUtterance = objc_getClass("AVSpeechUtterance");
 	AVSpeechSynthesizer *speech = [[speechSynthesizer alloc] init];
 
-	if(lockscreen)
+	if(lockscreen && shouldSpeakThisOutput)
 	{
 		NSString* textToSpeak = [NSString stringWithFormat:@"New %@ notification from: %@, %@.",bulletin.section,bulletin.title,bulletin.message];
 		AVSpeechUtterance *utterance = [speechUtterance speechUtteranceWithString:textToSpeak];
