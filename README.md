@@ -8,12 +8,12 @@ Listen to incoming notifications (as they are spoken).
 - Support for homescreen and LockScreen (separately)
 - iOS 7 and iOS6 support
 - Kill switch
-- Option to ignore ringer mute switch
+- **[Option]** to ignore ringer mute switch
+- **[Option]** to play only in headphones (and vice versa)
 
 ##Todo
 
 - Flipswitch toggle
-- **[Option]** to play only in headphones (and vice versa)
 - **[Option]** to interrupt/stop speaking
 - **[Option]** to speak automatically (as soon a notification arrives) or speak upon action i.e. (double?) tap banner
 - Select which part should be read (title, message, both)
