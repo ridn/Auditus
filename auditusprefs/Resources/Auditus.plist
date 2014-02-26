@@ -64,7 +64,7 @@
 			<key>key</key>
 			<string>outputTo</string>
 			<key>label</key>
-			<string>Restrich Output to</string>
+			<string>Restrict Output to</string>
 			<key>PostNotification</key>
 			<string>com.ridan.auditus/ReloadPrefs</string>
 			<key>validValues</key>
