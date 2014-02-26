@@ -34,7 +34,9 @@
 			//[[[self subviews]lastObject] setAlpha:.4];
 		}else{
 			//self.userInteractionEnabled = YES;
-			self.backgroundColor = [UIColor whiteColor];
+			//apparently the default color is not just white... -.-
+			self.backgroundColor = [UIColor colorWithRed:.969 green:.969 blue:.969 alpha: 1];
+			//self.backgroundColor = [UIColor whiteColor];
 			[specifier setProperty:[NSNumber numberWithBool:YES] forKey:@"enabled"];
 			//[[[self subviews]lastObject] setAlpha:1.0];
 		}
@@ -67,7 +69,9 @@
 		[rightBarButton release];
 
 		_specifiers = [[self loadSpecifiersFromPlistName:@"Auditus" target:self] retain];
+		//should probably just load these from the property list :P
 		[[self specifierAtIndex:2] setProperty:[AuditusLinkListCell class] forKey:@"cellClass"];
+		[[self specifierAtIndex:3] setProperty:[AuditusLinkListCell class] forKey:@"cellClass"];
 		[[self specifierAtIndex:[_specifiers count]-1] setProperty:[twitterCell class] forKey:@"cellClass"];
 	}
 	return _specifiers;
@@ -75,8 +79,13 @@
 -(void)setPreferenceValue:(id)value specifier:(id)specifier
 {
 	[super setPreferenceValue:value specifier:specifier];
-        if(specifier == [self specifierAtIndex:1])
-		[self reloadSpecifierAtIndex:2 animated:YES];
+	if(specifier == [self specifierAtIndex:1])
+		for(int i = 0; i < [[self specifiers]count]; i++)
+		{
+			if([[self specifierAtIndex:i] propertyForKey:@"cellClass"] == [AuditusLinkListCell class])
+	        		[self reloadSpecifierAtIndex:i animated:YES];
+		}
+
 }
 - (void)twitter
 {
